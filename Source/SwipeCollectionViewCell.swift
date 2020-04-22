@@ -266,5 +266,11 @@ extension SwipeCollectionViewCell: SwipeControllerDelegate {
     func swipeController(_ controller: SwipeController, didDeleteSwipeableAt indexPath: IndexPath) {
         collectionView?.deleteItems(at: [indexPath])
     }
+
+    func swipeController(_ controller: SwipeController, shouldBeginEditingSwipeableFor translation: CGPoint) -> Bool {
+        guard let collectionView = collectionView, let indexPath = collectionView.indexPath(for: self) else { return false }
+
+        return delegate?.collectionView(collectionView, shouldBeginEditingRowAt: indexPath, for: translation) ?? (abs(translation.y) < abs(translation.x))
+    }
 }
 

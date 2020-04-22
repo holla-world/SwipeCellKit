@@ -238,4 +238,10 @@ extension SwipeTableViewCell: SwipeControllerDelegate {
     func swipeController(_ controller: SwipeController, didDeleteSwipeableAt indexPath: IndexPath) {
         tableView?.deleteRows(at: [indexPath], with: .none)
     }
+
+    func swipeController(_ controller: SwipeController, shouldBeginEditingSwipeableFor translation: CGPoint) -> Bool {
+        guard let tableView = tableView, let indexPath = tableView.indexPath(for: self) else { return false }
+
+        return delegate?.tableView(tableView, shouldBeginEditingRowAt: indexPath, for: translation) ?? (abs(translation.y) < abs(translation.x))
+    }
 }

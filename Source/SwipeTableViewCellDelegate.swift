@@ -72,6 +72,17 @@ public protocol SwipeTableViewCellDelegate: class {
      - note: The returned rectange should be in the table view's own coordinate system. Returning `nil` will result in no vertical offset to be be calculated.
      */
     func visibleRect(for tableView: UITableView) -> CGRect?
+
+    /**
+     Asks the delegate whether the translation should trigger a swipe action.
+
+     - parameter tableView: The table view object providing this information.
+
+     - parameter indexPath: The index path of the row.
+
+     - parameter translation: The amount of pan gesture translation.
+     */
+    func tableView(_ tableView: UITableView, shouldBeginEditingRowAt indexPath: IndexPath, for translation: CGPoint) -> Bool
 }
 
 /**
@@ -88,5 +99,9 @@ public extension SwipeTableViewCellDelegate {
     
     func visibleRect(for tableView: UITableView) -> CGRect? {
         return nil
+    }
+
+    func tableView(_ tableView: UITableView, shouldBeginEditingRowAt indexPath: IndexPath, for translation: CGPoint) -> Bool {
+        return abs(translation.y) < abs(translation.x)
     }
 }

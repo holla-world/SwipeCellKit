@@ -217,6 +217,10 @@ extension MailCollectionViewController: SwipeCollectionViewCellDelegate {
             action.transitionDelegate = ScaleTransition.default
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, shouldBeginEditingRowAt indexPath: IndexPath, for translation: CGPoint) -> Bool {
+        return atan2(abs(translation.y), abs(translation.x)) < .pi / 8
+    }
 }
 
 class MailCollectionViewCell: SwipeCollectionViewCell {

@@ -23,7 +23,8 @@ protocol SwipeControllerDelegate: class {
     func swipeController(_ controller: SwipeController, didDeleteSwipeableAt indexPath: IndexPath)
     
     func swipeController(_ controller: SwipeController, visibleRectFor scrollView: UIScrollView) -> CGRect?
-    
+
+    func swipeController(_ controller: SwipeController, shouldBeginEditingSwipeableFor translation: CGPoint) -> Bool
 }
 
 class SwipeController: NSObject {
@@ -361,8 +362,8 @@ extension SwipeController: UIGestureRecognizerDelegate {
         if gestureRecognizer == panGestureRecognizer,
             let view = gestureRecognizer.view,
             let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
-            let translation = gestureRecognizer.translation(in: view)
-            return abs(translation.y) <= abs(translation.x)
+            let translation = gestureRecognizer.velocity(in: view)
+            return delegate?.swipeController(self, shouldBeginEditingSwipeableFor: translation) ?? (abs(translation.y) <= abs(translation.x))
         }
         
         return true
